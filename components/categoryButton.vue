@@ -18,9 +18,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({ categoryClick: "categoryClick" }),
+    ...mapActions({ getMediaList: "getMediaList" }),
     select() {
-      this.categoryClick(this.propsdata);
+      this.getMediaList({ page: 1, category: this.propsdata });
     },
   },
 };

@@ -30,9 +30,9 @@ export default {
 
 <style scoped>
 .card {
-  width: 10rem;
-  height: 12rem;
-  padding: 0.5rem;
+  width: 200px;
+  height: 300px;
+  padding: 15px;
 }
 
 .poster {

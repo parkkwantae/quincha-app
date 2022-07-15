@@ -10,6 +10,8 @@
     </div>
 
     <media-list></media-list>
+
+    <a href="#" class="top-button">top</a>
   </div>
 </template>
 
@@ -25,7 +27,14 @@ export default {
   },
 
   async fetch() {
-    await this.getMediaList();
+    await this.getMediaList({
+      page: 1,
+      category: { name: "전체", type: "all" },
+    });
+  },
+
+  created: {
+    fetch()
   },
 
   methods: {
@@ -43,5 +52,19 @@ export default {
 .categoryWrap {
   width: 100%;
   display: flex;
+}
+
+.top-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  color: white;
+  text-align: center;
+  text-decoration-line: none;
 }
 </style>
