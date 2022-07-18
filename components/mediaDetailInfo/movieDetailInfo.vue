@@ -21,7 +21,7 @@
     </div>
     <div class="cast-wrap">
       <h1 class="cast-title">주요 출연진</h1>
-      <ul class="cast-list-wrap" :class="cast.length > 8 && 'cast-overflow'">
+      <ul class="cast-list-wrap">
         <li class="cast-list" v-for="item in cast" :key="item.id">
           <img
             :src="
@@ -80,7 +80,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .wrap {
   max-width: 1200px;
   margin: 0 auto;
@@ -91,6 +91,10 @@ export default {
 .info-wrap {
   display: flex;
   gap: 50px;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
 }
 .img-wrap {
   flex-basis: 50%;
@@ -115,13 +119,18 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
+
+  @media (max-width: 1150px) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .content {
   margin-top: 20px;
   font-size: 20px;
   display: -webkit-box;
-  -webkit-line-clamp: 8;
+  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -135,28 +144,24 @@ export default {
   margin-top: 10px;
   list-style: none;
   display: flex;
-}
+  overflow-x: auto;
 
-.cast-overflow {
-  overflow-x: scroll;
-}
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 14px;
+  }
 
-.cast-list-wrap::-webkit-scrollbar {
-  width: 10px;
-  height: 14px;
-}
-
-.cast-list-wrap::-webkit-scrollbar-thumb {
-  background-color: #b0b0b0;
-  border-radius: 10px;
-  background-clip: padding-box;
-  border: 2px solid transparent;
-}
-
-.cast-list-wrap::-webkit-scrollbar-track {
-  background-color: #e0e0e0;
-  border-radius: 10px;
-  box-shadow: inset 0px 0px 3px white;
+  &::-webkit-scrollbar-thumb {
+    background-color: #b0b0b0;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 3px white;
+  }
 }
 
 .cast-list {

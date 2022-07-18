@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .wrap {
   width: 60px;
   height: 30px;
@@ -40,7 +40,7 @@ export default {
 
 .category {
   display: block;
-  font-size: 0.8rem;
+  font-size: 15px;
   margin: auto;
   color: #fff;
   font-family: Nanum-Pen-Regular;
@@ -48,8 +48,9 @@ export default {
 
 .selected {
   background-color: #fff;
-}
-.selected .category {
-  color: #000;
+
+  .category {
+    color: #000;
+  }
 }
 </style>

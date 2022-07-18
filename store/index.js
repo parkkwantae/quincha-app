@@ -8,12 +8,6 @@ export const state = () => {
   };
 };
 
-// export const getters = {
-//   getListData(state) {
-//     return state.listData;
-//   },
-// };
-
 export const mutations = {
   listSetting(state, payload) {
     if (payload.page <= 1) {
@@ -23,11 +17,6 @@ export const mutations = {
     }
     state.selectedCategory = payload.category;
   },
-
-  // categoryClick(state, payload) {
-  //   state.selectedCategory = payload.payload;
-  //   state.categoryListData = payload.data;
-  // },
 
   getMediaDetailInfo(state, payload) {
     state.selectedMediaInfo = payload;
@@ -57,27 +46,6 @@ export const actions = {
       console.log(error.message);
     }
   },
-
-  // async categoryClick({ commit }, payload) {
-  //   let dataArray = [];
-
-  //   try {
-  //     for (let i = 1; i <= 2; i++) {
-  //       const response = await base_api.get(`/trending/${payload.type}/day`, {
-  //         params: {
-  //           page: i,
-  //         },
-  //       });
-
-  //       const data = response.data.results;
-  //       dataArray = dataArray.concat(data);
-  //     }
-
-  //     commit("categoryClick", { payload, data: dataArray });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // },
 
   async getMediaDetailInfo({ commit }, payload) {
     try {

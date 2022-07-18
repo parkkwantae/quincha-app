@@ -1,19 +1,58 @@
 <template>
   <header class="header">
     <nav class="nav">
-      <a href="#" class="logo"> 퀸챠 </a>
-      <img
-        src="@/assets/images/default_profile.png"
-        alt="default_profile"
-        class="profile"
-      />
+      <nuxt-link
+        class="logo"
+        :to="{
+          path: '/',
+        }"
+      >
+        퀸챠
+      </nuxt-link>
+      <div class="auth-wrap">
+        <img
+          src="@/assets/images/default_profile.png"
+          alt="default_profile"
+          class="profile"
+          v-if="this.currentUser"
+        />
+        <font-awesome-icon
+          v-else
+          icon="lock"
+          class="lock-icon"
+          @click="showLoginModal = true"
+        />
+      </div>
+
+      <login-modal
+        v-if="showLoginModal"
+        @close="showLoginModal = false"
+      ></login-modal>
     </nav>
   </header>
 </template>
 
-<script></script>
+<script>
+import loginModal from "@/components/auth/loginModal.vue";
+import { mapState } from "vuex";
 
-<style scoped>
+export default {
+  data() {
+    return {
+      showLoginModal: false,
+    };
+  },
+  components: {
+    loginModal,
+  },
+
+  computed: {
+    ...mapState({ currentUser: "auth/currentUser" }),
+  },
+};
+</script>
+
+<style scoped lang="scss">
 .header {
   width: 100%;
   height: 50px;
@@ -35,7 +74,7 @@
 .logo {
   font-family: Nanum-Pen-Regular;
   text-decoration: none;
-
+  font-size: 25px;
   color: #ff0558;
 }
 
@@ -43,5 +82,16 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
+}
+
+.lock-icon {
+  font-size: 20px;
+  color: #84868d;
+  cursor: pointer;
+  transition: hover 300ms;
+
+  &:hover {
+    color: #fff;
+  }
 }
 </style>

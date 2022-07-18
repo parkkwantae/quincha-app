@@ -14,23 +14,3 @@ export default {
   },
 };
 </script>
-
-<style>
-@font-face {
-  font-family: "Nanum-Pen-Regular";
-  src: url("@/assets/fonts/Nanum-Pen-Regular.ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background-color: #000;
-  padding-top: 50px;
-}
-</style>

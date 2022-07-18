@@ -45,7 +45,6 @@ export default {
       setTimeout(async () => {
         this.page++;
         try {
-          console.log(this.page);
           await this.fetchData();
           $state.loaded();
         } catch (e) {
@@ -63,7 +62,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .listWrap {
   width: 100%;
   display: flex;

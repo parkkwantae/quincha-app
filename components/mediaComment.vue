@@ -58,7 +58,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .comment-wrap {
   margin-top: 20px;
 }
@@ -103,9 +103,9 @@ export default {
   font-size: 25px;
   font-family: Nanum-Pen-Regular;
   cursor: pointer;
-}
 
-.button:hover {
-  color: #fff;
+  &:hover {
+    color: #fff;
+  }
 }
 </style>
