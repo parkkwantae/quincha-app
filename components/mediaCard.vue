@@ -18,7 +18,10 @@ export default {
   props: ["mediadata"],
   data() {
     return {
-      imgUrl: `${image_url}${this.mediadata.poster_path}`,
+      imgUrl:
+        this.mediadata.poster_path === null
+          ? "https://via.placeholder.com/200x300/000000?text=no+poster"
+          : `${image_url}${this.mediadata.poster_path}`,
       routerPath:
         this.mediadata.media_type === "movie"
           ? `/movie/${this.mediadata.id}`

@@ -8,6 +8,12 @@ export const state = () => {
   };
 };
 
+// export const getters = {
+//   getListData(state) {
+//     return state.listData;
+//   },
+// };
+
 export const mutations = {
   listSetting(state, payload) {
     if (payload.page <= 1) {

@@ -1,7 +1,7 @@
 <template>
   <div class="listWrap">
     <loading v-if="this.listData == null"></loading>
-    <div class="list" v-for="(item, index) in this.listData" :key="index">
+    <div class="list" v-for="item in this.listData" :key="item.id">
       <media-card :mediadata="item"></media-card>
     </div>
     <infinite-loading v-if="this.listData.length" @infinite="scrolling">
@@ -22,6 +22,15 @@ export default {
 
   computed: {
     ...mapState(["listData", "selectedCategory"]),
+    checkCategory() {
+      return this.selectedCategory;
+    },
+  },
+
+  watch: {
+    checkCategory(val) {
+      this.page = 1;
+    },
   },
 
   methods: {
@@ -36,6 +45,7 @@ export default {
       setTimeout(async () => {
         this.page++;
         try {
+          console.log(this.page);
           await this.fetchData();
           $state.loaded();
         } catch (e) {
@@ -58,6 +68,7 @@ export default {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 0.5rem;
+  /* padding: 8px; */
+  justify-content: center;
 }
 </style>

@@ -19,8 +19,8 @@ export default {
 
   methods: {
     ...mapActions({ getMediaList: "getMediaList" }),
-    select() {
-      this.getMediaList({ page: 1, category: this.propsdata });
+    async select() {
+      await this.getMediaList({ page: 1, category: this.propsdata });
     },
   },
 };

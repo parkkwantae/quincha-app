@@ -10,8 +10,8 @@
         <ul class="etc-info">
           <li>{{ data.first_air_date }}</li>
           <li>
-            <span v-for="item in data.genres" :key="item.id"
-              >{{ item.name }}
+            <span v-for="(item, idx) in data.genres" :key="item.id">
+              {{ item.name }}<span v-if="idx < data.genres.length - 1">, </span>
             </span>
           </li>
           <li>{{ data.number_of_episodes }}부작</li>
@@ -21,10 +21,14 @@
     </div>
     <div class="cast-wrap">
       <h2 class="cast-title">주요 출연진</h2>
-      <ul class="cast-list-wrap">
+      <ul class="cast-list-wrap" :class="cast.length > 8 && 'cast-overflow'">
         <li class="cast-list" v-for="item in cast" :key="item.id">
           <img
-            :src="`${imgSrc}${item.profile_path}`"
+            :src="
+              item.profile_path === null
+                ? `https://via.placeholder.com/100/4A4F5A/000000?text=no+poster`
+                : `${imgSrc}${item.profile_path}`
+            "
             alt="cast-poster"
             class="cast-poster"
           />
@@ -81,15 +85,15 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   color: white;
+  font-family: Nanum-Pen-Regular;
+  padding: 10px;
 }
 .info-wrap {
   display: flex;
-
-  flex: 1 2;
+  gap: 50px;
 }
 .img-wrap {
-  /* flex-basis: 30%;
-  background: red; */
+  flex-basis: 50%;
 }
 .poster {
   width: 100%;
@@ -97,32 +101,79 @@ export default {
 }
 
 .info {
-  /* flex-basis: 50%;
-  background: blue; */
+  flex-basis: 50%;
+  line-height: 1.5;
 }
 
 .title {
-  text-align: center;
+  font-size: 35px;
 }
 
 .etc-info {
+  font-size: 25px;
   list-style: none;
   display: flex;
   justify-content: space-around;
+  margin-top: 10px;
+}
+
+.content {
+  margin-top: 20px;
+  font-size: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cast-wrap {
+  margin-top: 20px;
 }
 
 .cast-list-wrap {
+  margin-top: 10px;
   list-style: none;
   display: flex;
+}
+
+.cast-overflow {
   overflow-x: scroll;
+}
+
+.cast-list-wrap::-webkit-scrollbar {
+  width: 10px;
+  height: 14px;
+}
+
+.cast-list-wrap::-webkit-scrollbar-thumb {
+  background-color: #b0b0b0;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+.cast-list-wrap::-webkit-scrollbar-track {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 3px white;
 }
 
 .cast-list {
   margin: 0 10px;
+  padding: 0;
 }
 
 .cast-poster {
   width: 100px;
   height: 100px;
+  border-radius: 50%;
+}
+
+.cast-name {
+  font-size: 18px;
+  display: block;
+  text-align: center;
+  margin: 5px 0;
 }
 </style>

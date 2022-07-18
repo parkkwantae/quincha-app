@@ -11,14 +11,14 @@
 
     <media-list></media-list>
 
-    <a href="#" class="top-button">top</a>
+    <span class="top-button" @click="scrollTop">top</span>
   </div>
 </template>
 
 <script>
 import categoryButton from "@/components/categoryButton.vue";
 import mediaList from "@/components/mediaList.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
@@ -27,18 +27,23 @@ export default {
   },
 
   async fetch() {
-    await this.getMediaList({
-      page: 1,
-      category: { name: "전체", type: "all" },
-    });
+    if (this.listData.length === 0) {
+      await this.getMediaList({
+        page: 1,
+        category: { name: "전체", type: "all" },
+      });
+    }
   },
 
-  created: {
-    fetch()
+  computed: {
+    ...mapState(["listData"]),
   },
 
   methods: {
     ...mapActions(["getMediaList"]),
+    scrollTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
   },
 };
 </script>
@@ -65,6 +70,7 @@ export default {
   border: 1px solid #fff;
   color: white;
   text-align: center;
-  text-decoration-line: none;
+  z-index: 999;
+  cursor: pointer;
 }
 </style>
