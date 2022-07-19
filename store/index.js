@@ -1,4 +1,5 @@
 import { base_api } from "@/plugins/axios";
+import { firestore } from "@/plugins/firebase";
 
 export const state = () => {
   return {

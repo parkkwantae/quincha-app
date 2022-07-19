@@ -7,10 +7,19 @@
 
 <script>
 import movieDetailInfo from "@/components/mediaDetailInfo/movieDetailInfo.vue";
+import { mapActions } from "vuex";
 
 export default {
   components: {
     movieDetailInfo,
+  },
+
+  mounted() {
+    this.getComment(this.$route.params.mediaInfo);
+  },
+
+  methods: {
+    ...mapActions({ getComment: "auth/getComment" }),
   },
 };
 </script>

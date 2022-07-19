@@ -38,25 +38,7 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    // [
-    //   "@nuxtjs/firebase",
-    //   {
-    //     config: {
-    // apikey: process.env.FB_API_KEY,
-    // authDomain: process.env.FB_AUTH_DOMAIN,
-    // projectId: process.env.FB_PROJECT_ID,
-    // storageBucket: process.env.FB_STORAGE_BUCKET,
-    // messagingSenderId: process.env.FB_MESSAGING_SENDERID,
-    // appId: process.env.FB_APP_ID,
-    //     },
-    //     services: {
-    //       auth: true,
-    //       firestore: true,
-    //     },
-    //   },
-    // ],
-  ],
+  modules: [],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

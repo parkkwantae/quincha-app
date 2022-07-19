@@ -11,10 +11,11 @@
       </nuxt-link>
       <div class="auth-wrap">
         <img
-          src="@/assets/images/default_profile.png"
+          :src="this.currentUser.profile_img"
           alt="default_profile"
           class="profile"
-          v-if="this.currentUser"
+          v-if="this.currentUser.length !== 0 || this.currentUser == null"
+          @click="settingOpen = !settingOpen"
         />
         <font-awesome-icon
           v-else
@@ -28,26 +29,45 @@
         v-if="showLoginModal"
         @close="showLoginModal = false"
       ></login-modal>
+
+      <div class="setting-list" v-if="settingOpen">
+        <button class="setting" @click="settingProfileOpen = true">
+          프로필 수정
+        </button>
+        <button class="setting" @click="logout">로그아웃</button>
+      </div>
     </nav>
   </header>
 </template>
 
 <script>
 import loginModal from "@/components/auth/loginModal.vue";
-import { mapState } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
       showLoginModal: false,
+      settingOpen: false,
+      settingProfileOpen: false,
+      settingConfirmOpen: false,
     };
   },
   components: {
     loginModal,
   },
 
+  methods: {
+    ...mapActions({ userReset: "auth/logout" }),
+    logout() {
+      this.$auth().signOut();
+      this.userReset();
+      this.settingOpen = false;
+    },
+  },
+
   computed: {
-    ...mapState({ currentUser: "auth/currentUser" }),
+    ...mapGetters({ currentUser: "auth/getUser" }),
   },
 };
 </script>
@@ -82,6 +102,7 @@ export default {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .lock-icon {
@@ -92,6 +113,41 @@ export default {
 
   &:hover {
     color: #fff;
+  }
+}
+
+.setting-list {
+  position: absolute;
+  top: 25px;
+  right: 48px;
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  padding: 0;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  border-radius: 10px 0 10px 10px;
+
+  .setting {
+    background-color: #ffebee;
+    color: #4fc3f7;
+    font-weight: 600;
+    padding: 10px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+
+    &:first-child {
+      border-bottom: 1px dotted #4fc3f7;
+      border-radius: 10px 0 0 0;
+    }
+    &:last-child {
+      border-radius: 0 0 10px 10px;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 }
 </style>

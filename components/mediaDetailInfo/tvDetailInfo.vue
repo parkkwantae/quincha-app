@@ -36,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <media-comment></media-comment>
+    <media-comment :mediaid="tvid"></media-comment>
   </div>
 </template>
 
