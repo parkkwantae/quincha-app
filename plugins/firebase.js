@@ -15,3 +15,5 @@ export default function ({ store, redirect }) {
   if (!firebase.apps.length) firebase.initializeApp(config);
   Vue.prototype.$auth = firebase.auth;
 }
+// firebase.initializeApp(config);
+// Vue.prototype.$auth = firebase.auth;
