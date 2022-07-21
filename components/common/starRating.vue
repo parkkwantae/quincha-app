@@ -1,6 +1,10 @@
+<!-- props 인자로 받아오는 disabled의 값이 ture면 설정된 별점 값을 보여주는 용도로, false 면 별점을 설정할 수 있도록 구현
+mediaComment컴포넌트에 부착 
+!-->
+
 <template>
   <div class="wrap">
-    <span class="star">
+    <span class="star" :class="disabled ? 'disabled' : null">
       ★★★★★
       <span :style="`width: ${starWidth}`">★★★★★</span>
       <input
@@ -18,7 +22,7 @@
 <script>
 export default {
   components: {},
-  props: ["propsStarValue"],
+  props: ["propsStarValue", "disabled"],
 
   data() {
     return {
@@ -37,7 +41,7 @@ export default {
 <style scope lang="scss">
 .star {
   position: relative;
-  font-size: 2rem;
+  font-size: 30px;
   color: #ddd;
 
   input {
@@ -56,6 +60,16 @@ export default {
     color: #fbc02d;
     overflow: hidden;
     pointer-events: none;
+  }
+}
+
+.disabled {
+  color: transparent;
+  font-size: 25px;
+  pointer-events: none;
+
+  span {
+    color: #ddd;
   }
 }
 </style>

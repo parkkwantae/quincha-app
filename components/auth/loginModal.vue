@@ -1,3 +1,6 @@
+<!-- 간단한 로그인과, 회원가입을 모달창을 통해 수행할 수 있도록 구현한 컴포넌트, pageHeader 컴포넌트에 부착 
+!-->
+
 <template>
   <transition name="loginModal">
     <div class="wrap">
@@ -193,11 +196,11 @@ export default {
     border-radius: 10px;
     padding: 12px 0 12px 10px;
     margin: 3px 0;
-    font-size: 15px;
+    font-size: 18px;
     width: 90%;
 
     &::placeholder {
-      font-size: 12px;
+      font-size: 18px;
       color: #84868d;
     }
   }
@@ -234,7 +237,7 @@ export default {
     background-color: transparent;
     color: #84868d;
     font-size: 25px;
-    font-family: Nanum-Pen-Regular;
+    // font-family: Nanum-Pen-Regular;
     cursor: pointer;
 
     &:hover {

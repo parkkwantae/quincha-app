@@ -1,8 +1,10 @@
+<!-- 카테고리를 선택하는 버튼을 구현한 컴포넌트, index 페이지에 부착 !-->
+
 <template>
   <div
     class="wrap"
     @click="select"
-    :class="{ selected: this.selectedCategory.name === propsdata.name }"
+    :class="{ selected: selectedCategory.name === propsdata.name }"
   >
     <span class="category">{{ propsdata.name }}</span>
   </div>
@@ -43,7 +45,7 @@ export default {
   font-size: 15px;
   margin: auto;
   color: #fff;
-  font-family: Nanum-Pen-Regular;
+  // font-family: Nanum-Pen-Regular;
 }
 
 .selected {

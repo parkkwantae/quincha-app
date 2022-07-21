@@ -2,8 +2,9 @@ import { firestore } from "@/plugins/firebase";
 
 export const state = () => {
   return {
-    currentUser: [],
-    currentMediaComment: [],
+    loginState: false,
+    currentUser: null, // 현재 로그인 유저 정보
+    currentMediaComment: [], // 현재 선택된 작품 평 리스트
   };
 };
 
@@ -15,15 +16,21 @@ export const getters = {
   getComments(state) {
     return state.currentMediaComment;
   },
+
+  getLoginState(state) {
+    return state.loginState;
+  },
 };
 
 export const mutations = {
   setUser(state, payload) {
+    state.loginState = true;
     state.currentUser = payload;
   },
 
   logout(state) {
-    state.currentUser = [];
+    state.currentUser = "";
+    state.loginState = false;
   },
 
   setComment(state, payload) {
@@ -32,8 +39,8 @@ export const mutations = {
 };
 
 export const actions = {
-  setUser({ commit }, uid) {
-    firestore()
+  async setUser({ commit }, uid) {
+    await firestore()
       .collection("users")
       .doc(uid)
       .get()
@@ -62,20 +69,17 @@ export const actions = {
 
           commit("setComment", comments);
         } else {
+          const comments = [
+            {
+              user: state.currentUser,
+              rating: payload.ratingValue,
+              comment: payload.comment,
+            },
+          ];
           q.set({
-            comments: [
-              {
-                user: state.currentUser,
-                rating: payload.ratingValue,
-                comment: payload.comment,
-              },
-            ],
+            comments,
           });
-          commit("setComment", {
-            user: state.currentUser,
-            rating: payload.ratingValue,
-            comment: payload.comment,
-          });
+          commit("setComment", comments);
         }
       })
       .catch((e) => {

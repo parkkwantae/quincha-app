@@ -15,15 +15,18 @@ const config = {
 
 // firebase.initializeApp(config);
 
-export default function ({ store, redirect }) {
+export default function ({ store }, inject) {
   if (!firebase.apps.length) firebase.initializeApp(config);
 
-  Vue.prototype.$auth = firebase.auth;
-  Vue.prototype.$firestore = firebase.firestore;
+  // Vue.prototype.$auth = firebase.auth;
+  // Vue.prototype.$firestore = firebase.firestore;
 
-  firebase.auth().onAuthStateChanged((user) => {
-    store.dispatch("auth/setUser", user.uid);
-  });
+  // firebase.auth().onAuthStateChanged(async (user) => {
+  //   await store.dispatch("auth/setUser", user.uid);
+  // });
+
+  inject("auth", firebase.auth);
+  inject("firestore", firebase.firestore);
 }
 
 export const firestore = firebase.firestore;

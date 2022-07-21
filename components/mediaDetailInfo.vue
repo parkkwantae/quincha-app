@@ -1,26 +1,26 @@
 <template>
-  <div class="wrap">
-    <loading v-if="$fetchState.pending"></loading>
+  <div class="detail-wrap">
+    <loading v-if="!data"></loading>
     <div class="info-wrap">
       <div class="img-wrap">
         <img :src="imgUrl" alt="poster" class="poster" />
       </div>
       <div class="info">
-        <h1 class="title">{{ data.name }}</h1>
+        <h1 class="title">{{ data.title }}</h1>
         <ul class="etc-info">
-          <li>{{ data.first_air_date }}</li>
+          <li>{{ data.date }}</li>
           <li>
             <span v-for="(item, idx) in data.genres" :key="item.id">
               {{ item.name }}<span v-if="idx < data.genres.length - 1">, </span>
             </span>
           </li>
-          <li>{{ data.number_of_episodes }}부작</li>
+          <li>{{ data.etcinfo }}</li>
         </ul>
         <p class="content">{{ data.overview }}</p>
       </div>
     </div>
     <div class="cast-wrap">
-      <h2 class="cast-title">주요 출연진</h2>
+      <h1 class="cast-title">주요 출연진</h1>
       <ul class="cast-list-wrap">
         <li class="cast-list" v-for="item in cast" :key="item.id">
           <img
@@ -36,58 +36,28 @@
         </li>
       </ul>
     </div>
-    <media-comment :mediaid="tvid"></media-comment>
   </div>
 </template>
 
 <script>
-import { image_url } from "@/plugins/axios";
 import loading from "@/components/common/loading.vue";
-import { mapActions, mapState } from "vuex";
 import mediaComment from "@/components/mediaComment.vue";
 
 export default {
-  props: ["tvid", "type"],
+  props: ["data", "cast", "imgUrl"],
   data() {
     return {
-      data: "",
-      cast: "",
-      imgUrl: "",
-      imgSrc: image_url,
+      imgSrc: this.$image_url,
     };
   },
   components: {
     loading,
-    image_url,
     mediaComment,
-  },
-
-  async fetch() {
-    await this.getMediaDetailInfo({ id: this.tvid, type: this.type });
-    this.data = this.selectedMediaInfo.data;
-    this.cast = this.selectedMediaInfo.credits_data;
-    this.imgUrl = `${image_url}${this.data.poster_path}`;
-  },
-  fetchDelay: 1000,
-
-  computed: {
-    ...mapState(["selectedMediaInfo"]),
-  },
-
-  methods: {
-    ...mapActions(["getMediaDetailInfo"]),
   },
 };
 </script>
 
 <style scoped lang="scss">
-.wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-  color: white;
-  font-family: Nanum-Pen-Regular;
-  padding: 10px;
-}
 .info-wrap {
   display: flex;
   gap: 50px;

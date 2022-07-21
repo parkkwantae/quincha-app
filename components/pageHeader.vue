@@ -1,3 +1,4 @@
+<!-- 사이트의 헤더를 구현한 컴포넌트로 페이지에 고정적으로 보여주기 위해, position을 fixed로 주고 default 레이아웃에 부착함-->
 <template>
   <header class="header">
     <nav class="nav">
@@ -11,10 +12,10 @@
       </nuxt-link>
       <div class="auth-wrap">
         <img
-          :src="this.currentUser.profile_img"
+          :src="currentUser.profile_img"
           alt="default_profile"
           class="profile"
-          v-if="this.currentUser.length !== 0 || this.currentUser == null"
+          v-if="currentUser"
           @click="settingOpen = !settingOpen"
         />
         <font-awesome-icon
@@ -31,17 +32,18 @@
       ></login-modal>
 
       <div class="setting-list" v-if="settingOpen">
-        <button class="setting" @click="settingProfileOpen = true">
-          프로필 수정
-        </button>
+        <button class="setting" @click="profileOpen">프로필 수정</button>
         <button class="setting" @click="logout">로그아웃</button>
       </div>
+
+      <!-- <profile-change v-if="settingProfileOpen"></profile-change> -->
     </nav>
   </header>
 </template>
 
 <script>
 import loginModal from "@/components/auth/loginModal.vue";
+// import profileChange from "@/components/auth/profileChange.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -50,11 +52,12 @@ export default {
       showLoginModal: false,
       settingOpen: false,
       settingProfileOpen: false,
-      settingConfirmOpen: false,
+      // settingConfirmOpen: false,
     };
   },
   components: {
     loginModal,
+    // profileChange,
   },
 
   methods: {
@@ -62,6 +65,10 @@ export default {
     logout() {
       this.$auth().signOut();
       this.userReset();
+      this.settingOpen = false;
+    },
+    profileOpen() {
+      this.settingProfileOpen = true;
       this.settingOpen = false;
     },
   },
@@ -92,7 +99,7 @@ export default {
 }
 
 .logo {
-  font-family: Nanum-Pen-Regular;
+  // font-family: Nanum-Pen-Regular;
   text-decoration: none;
   font-size: 25px;
   color: #ff0558;
@@ -129,16 +136,17 @@ export default {
   border-radius: 10px 0 10px 10px;
 
   .setting {
-    background-color: #ffebee;
-    color: #4fc3f7;
+    background-color: #ddd;
+    color: #000;
     font-weight: 600;
     padding: 10px;
     border: 0;
     outline: 0;
+    font-size: 15px;
     cursor: pointer;
 
     &:first-child {
-      border-bottom: 1px dotted #4fc3f7;
+      border-bottom: 1px dotted #000;
       border-radius: 10px 0 0 0;
     }
     &:last-child {

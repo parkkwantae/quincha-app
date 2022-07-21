@@ -1,16 +1,29 @@
+<!-- mediaInfo 페이지에 부착되어, 각각의 영상물에 대한 사용자 평을 보여주고, 평을 작성할 수 있도록 구현한 컴포넌트 !-->
+
 <template>
   <div class="comment-wrap">
     <h1 class="title">사용자 평</h1>
-    <ul class="users-comment" v-if="this.currentComment.length > 0">
+    <ul class="users-comment" v-if="currentComment.length > 0">
       <li
         class="users-comment-list"
-        v-for="(item, idx) in this.currentComment"
+        v-for="(item, idx) in currentComment"
         :key="idx"
       >
         <div class="users-comment-list-info">
           <img :src="item.user.profile_img" />
           <span class="nick">{{ item.user.nick }}</span>
-          <span class="rating">{{ item.rating }}</span>
+          <div class="rating">
+            <star-rating
+              :disabled="true"
+              :propsStarValue="item.rating"
+            ></star-rating>
+          </div>
+          <font-awesome-icon
+            icon="x"
+            class="delete-icon"
+            @click="deleteComment"
+            v-if="loginState && currentUser.uid === item.user.uid"
+          />
         </div>
         <p class="users-comment-list-comment">
           {{ item.comment }}
@@ -20,23 +33,15 @@
 
     <span v-else class="comment-empty">등록된 사용자 평이 없습니다. </span>
 
-    <div
-      class="comment"
-      v-if="this.currentUser.length !== 0 || this.currentUser == null"
-    >
+    <div class="comment" v-if="loginState">
       <h3 class="comment-title">평가하기</h3>
       <div class="comment-star">
         <star-rating
           @starValue="getRatingValue"
           :propsStarValue="ratingValue"
+          :disabled="false"
         ></star-rating>
       </div>
-      <!-- <input
-        type="text"
-        placeholder="닉네임을 입력해주세요"
-        v-model="inputName"
-        class="comment-input"
-      /> -->
       <textarea
         placeholder="평을 입력해주세요."
         v-model="inputContent"
@@ -44,10 +49,7 @@
         wrap="hard"
       />
     </div>
-    <div
-      class="comment-button"
-      v-if="this.currentUser.length !== 0 || this.currentUser == null"
-    >
+    <div class="comment-button" v-if="loginState">
       <button class="button cancel" @click="commentCancel">취소</button>
       <button class="button submit" @click="commentSubmit">남기기</button>
     </div>
@@ -64,6 +66,7 @@ export default {
     return {
       ratingValue: 0,
       // inputName: "",
+
       inputContent: "",
     };
   },
@@ -72,6 +75,7 @@ export default {
     ...mapGetters({
       currentUser: "auth/getUser",
       currentComment: "auth/getComments",
+      loginState: "auth/getLoginState",
     }),
   },
 
@@ -85,6 +89,8 @@ export default {
       this.inputContent = "";
       this.ratingValue = 0;
     },
+
+    async deleteComment() {},
 
     async commentSubmit() {
       if (this.ratingValue === 0) alert("별점을 선택해주세요");
@@ -124,6 +130,8 @@ export default {
 .users-comment-list-info {
   display: flex;
   align-items: center;
+  position: relative;
+  width: 500px;
 
   img {
     width: 25px;
@@ -137,7 +145,20 @@ export default {
   }
 
   .rating {
-    margin-left: 20px;
+    margin-left: 15px;
+  }
+
+  .delete-icon {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 12px;
+
+    &:hover {
+      color: #ff7043;
+    }
   }
 }
 
@@ -145,7 +166,7 @@ export default {
   width: 500px;
 
   word-wrap: break-word;
-  margin-top: 5px;
+  margin: 10px 0;
   font-size: 20px;
   color: #84868d;
   display: -webkit-box;
@@ -180,6 +201,7 @@ export default {
 }
 
 .comment-text {
+  font-size: 18px;
   margin-top: 10px;
   width: 100%;
   height: 200px;
@@ -201,7 +223,7 @@ export default {
   background-color: transparent;
   color: #84868d;
   font-size: 25px;
-  font-family: Nanum-Pen-Regular;
+  // font-family: Nanum-Pen-Regular;
   cursor: pointer;
 
   &:hover {

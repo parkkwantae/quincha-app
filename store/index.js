@@ -1,12 +1,15 @@
-import { base_api } from "@/plugins/axios";
-import { firestore } from "@/plugins/firebase";
-
 export const state = () => {
   return {
     selectedCategory: "", // 선택된 카테고리 정보
     listData: [], // 카테고리에 따른 데이터 리스트
-    selectedMediaInfo: "",
+    selectedMediaInfo: "", // 현재 선택된 작품정보
   };
+};
+
+export const getters = {
+  selectedMediaInfo(state) {
+    return state.selectedMediaInfo;
+  },
 };
 
 export const mutations = {
@@ -27,7 +30,7 @@ export const mutations = {
 export const actions = {
   async getMediaList({ commit }, payload) {
     try {
-      const response = await base_api.get(
+      const response = await this.$base_api.get(
         `/trending/${payload.category.type}/day`,
         {
           params: {
@@ -54,13 +57,17 @@ export const actions = {
 
       switch (payload.type) {
         case "movie": {
-          response = await base_api.get(`/movie/${payload.id}`);
-          response_credits = await base_api.get(`/movie/${payload.id}/credits`);
+          response = await this.$base_api.get(`/movie/${payload.id}`);
+          response_credits = await this.$base_api.get(
+            `/movie/${payload.id}/credits`
+          );
           break;
         }
         case "tv": {
-          response = await base_api.get(`/tv/${payload.id}`);
-          response_credits = await base_api.get(`/tv/${payload.id}/credits`);
+          response = await this.$base_api.get(`/tv/${payload.id}`);
+          response_credits = await this.$base_api.get(
+            `/tv/${payload.id}/credits`
+          );
           break;
         }
       }
