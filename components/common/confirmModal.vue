@@ -1,13 +1,15 @@
 <template>
-  <div class="modal-wrap">
-    <div class="modal">
-      <div class="header"></div>
-      <div class="body">
-        <p class="alertText">{{ alertText }}</p>
+  <div class="cml-modal-wrap">
+    <div class="cml-modal">
+      <div class="cml-header">
+        <span>알림</span>
       </div>
-      <div class="footer">
-        <span class="cancel">아니요</span>
-        <span class="agree">예</span>
+      <div class="cml-body">
+        <p class="cml-alertText">{{ alertText }}</p>
+      </div>
+      <div class="cml-footer">
+        <span class="cml-cancel" @click="$emit('cancel')">아니요</span>
+        <span class="cml-agree" @click="$emit('agree')">예</span>
       </div>
     </div>
   </div>

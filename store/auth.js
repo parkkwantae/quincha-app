@@ -1,4 +1,4 @@
-import { firestore } from "@/plugins/firebase";
+// import { firestore } from "@/plugins/firebase";
 
 export const state = () => {
   return {
@@ -40,7 +40,7 @@ export const mutations = {
 
 export const actions = {
   async setUser({ commit }, uid) {
-    await firestore()
+    await this.$firestore()
       .collection("users")
       .doc(uid)
       .get()
@@ -53,16 +53,19 @@ export const actions = {
   },
 
   async addComment({ commit, state }, payload) {
-    const q = firestore().collection("comments").doc(payload.id);
+    const q = this.$firestore().collection("comments").doc(payload.id);
+    const randomId = Math.random().toString(36).substring(2, 12);
 
     q.get()
       .then((doc) => {
         if (doc.exists) {
           const comments = doc.data().comments;
+
           comments.unshift({
             user: state.currentUser,
             rating: payload.ratingValue,
             comment: payload.comment,
+            id: randomId,
           });
 
           q.update({ comments });
@@ -74,6 +77,7 @@ export const actions = {
               user: state.currentUser,
               rating: payload.ratingValue,
               comment: payload.comment,
+              id: randomId,
             },
           ];
           q.set({
@@ -89,7 +93,7 @@ export const actions = {
   },
 
   async getComment({ commit }, payload) {
-    const q = firestore().collection("comments").doc(payload);
+    const q = this.$firestore().collection("comments").doc(payload);
 
     q.get()
       .then((doc) => {
@@ -102,5 +106,25 @@ export const actions = {
       .catch((e) => {
         console.error(e);
       });
+  },
+
+  async removeComment({ commit }, payload) {
+    const q = this.$firestore().collection("comments").doc(payload.id);
+    let comments;
+    await q
+      .get()
+      .then(async (doc) => {
+        comments = doc.data().comments;
+        const idx = comments.findIndex((obj) => obj.id === payload.data.id);
+        comments.splice(idx, 1);
+      })
+      .catch((e) => console.error(e.code));
+
+    await q
+      .update({
+        comments,
+      })
+      .then(() => commit("setComment", comments))
+      .catch((e) => console.error(e.code));
   },
 };

@@ -1,11 +1,11 @@
 <template>
-  <div class="wrap">
+  <div class="md-wrap">
     <media-detail-info
       :data="data"
       :cast="cast"
       :imgUrl="imgUrl"
     ></media-detail-info>
-    <media-comment :mediaid="$route.mediaDetail"></media-comment>
+    <media-comment :mediaid="$route.params.mediaDetail"></media-comment>
   </div>
 </template>
 
@@ -53,12 +53,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-  color: white;
-  padding: 10px;
-}
-</style>

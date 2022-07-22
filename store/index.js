@@ -1,8 +1,8 @@
 export const state = () => {
   return {
-    selectedCategory: "", // 선택된 카테고리 정보
-    listData: [], // 카테고리에 따른 데이터 리스트
-    selectedMediaInfo: "", // 현재 선택된 작품정보
+    selectedCategory: null, // 선택된 카테고리 정보
+    listData: null, // 카테고리에 따른 데이터 리스트
+    selectedMediaInfo: null, // 현재 선택된 작품정보
   };
 };
 
@@ -10,13 +10,21 @@ export const getters = {
   selectedMediaInfo(state) {
     return state.selectedMediaInfo;
   },
+
+  getLoading(state) {
+    return state.loading;
+  },
+
+  getListData(state) {
+    return state.listData;
+  },
 };
 
 export const mutations = {
   listSetting(state, payload) {
     if (payload.page <= 1) {
       state.listData = payload.data;
-    } else {
+    } else if (state.listData) {
       payload.data.forEach((item) => state.listData.push(item));
     }
     state.selectedCategory = payload.category;

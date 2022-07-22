@@ -2,11 +2,11 @@
 
 <template>
   <div
-    class="wrap"
+    class="cb-wrap"
     @click="select"
-    :class="{ selected: selectedCategory.name === propsdata.name }"
+    :class="{ 'cb-selected': selectedCategory.name === propsdata.name }"
   >
-    <span class="category">{{ propsdata.name }}</span>
+    <span class="cb-category">{{ propsdata.name }}</span>
   </div>
 </template>
 
@@ -27,32 +27,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.wrap {
-  width: 60px;
-  height: 30px;
-  border-radius: 12px;
-  border: 1px solid #fff;
-  padding: 0.2rem;
-  display: flex;
-  margin: 0.5rem 0.5rem;
-  cursor: pointer;
-}
-
-.category {
-  display: block;
-  font-size: 15px;
-  margin: auto;
-  color: #fff;
-  // font-family: Nanum-Pen-Regular;
-}
-
-.selected {
-  background-color: #fff;
-
-  .category {
-    color: #000;
-  }
-}
-</style>

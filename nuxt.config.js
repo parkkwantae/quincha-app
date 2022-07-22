@@ -20,7 +20,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["@/assets/css/reset.scss"],
+  css: ["@/assets/styles/index.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -36,6 +36,7 @@ export default {
   buildModules: [
     "@nuxtjs/dotenv",
     ["@nuxtjs/fontawesome", { component: "fontAwesome", suffix: true }],
+    "@nuxtjs/style-resources",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -55,4 +56,8 @@ export default {
       brands: FontAwesome.brands,
     },
   },
+
+  // styleResources: {
+  //   scss: ["@/assets/styles/index.scss"],
+  // },
 };

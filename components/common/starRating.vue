@@ -3,8 +3,8 @@ mediaComment컴포넌트에 부착
 !-->
 
 <template>
-  <div class="wrap">
-    <span class="star" :class="disabled ? 'disabled' : null">
+  <div class="sr-wrap">
+    <span class="sr-star" :class="disabled ? 'sr-disabled' : null">
       ★★★★★
       <span :style="`width: ${starWidth}`">★★★★★</span>
       <input
@@ -37,39 +37,3 @@ export default {
   },
 };
 </script>
-
-<style scope lang="scss">
-.star {
-  position: relative;
-  font-size: 30px;
-  color: #ddd;
-
-  input {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  span {
-    width: 0;
-    position: absolute;
-    left: 0;
-    color: #fbc02d;
-    overflow: hidden;
-    pointer-events: none;
-  }
-}
-
-.disabled {
-  color: transparent;
-  font-size: 25px;
-  pointer-events: none;
-
-  span {
-    color: #ddd;
-  }
-}
-</style>

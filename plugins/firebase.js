@@ -1,4 +1,3 @@
-import Vue from "vue";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -13,22 +12,9 @@ const config = {
   measurementId: process.env.FB_MEASUREMENT_ID,
 };
 
-// firebase.initializeApp(config);
-
 export default function ({ store }, inject) {
   if (!firebase.apps.length) firebase.initializeApp(config);
-
-  // Vue.prototype.$auth = firebase.auth;
-  // Vue.prototype.$firestore = firebase.firestore;
-
-  // firebase.auth().onAuthStateChanged(async (user) => {
-  //   await store.dispatch("auth/setUser", user.uid);
-  // });
 
   inject("auth", firebase.auth);
   inject("firestore", firebase.firestore);
 }
-
-export const firestore = firebase.firestore;
-// firebase.initializeApp(config);
-// Vue.prototype.$auth = firebase.auth;
