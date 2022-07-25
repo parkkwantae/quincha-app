@@ -39,7 +39,10 @@
       </div>
 
       <transition name="modal-fade">
-        <profile-setting v-if="profileSettingOpen"></profile-setting>
+        <profile-setting
+          v-if="profileSettingOpen"
+          @close="profileSettingOpen = false"
+        ></profile-setting>
       </transition>
     </nav>
   </header>

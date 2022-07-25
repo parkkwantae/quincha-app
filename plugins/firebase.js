@@ -15,6 +15,8 @@ const config = {
 export default function ({ store }, inject) {
   if (!firebase.apps.length) firebase.initializeApp(config);
 
+  // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
   inject("auth", firebase.auth);
   inject("firestore", firebase.firestore);
 }

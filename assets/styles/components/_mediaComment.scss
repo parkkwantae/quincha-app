@@ -99,20 +99,6 @@
   justify-content: flex-end;
 }
 
-.mc-button {
-  border: none;
-  outline: none;
-  padding: 5px;
-  background-color: transparent;
-  color: #84868d;
-  font-size: 25px;
-  // font-family: Nanum-Pen-Regular;
-  cursor: pointer;
-
-  &:hover {
-    color: #fff;
-  }
-}
 .modal-fade-enter-active,
 .madal-fade-leave-active {
   transition: all 500ms ease;

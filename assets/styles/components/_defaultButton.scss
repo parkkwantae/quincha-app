@@ -1,0 +1,21 @@
+.dfb-button {
+  border: none;
+  outline: none;
+  padding: 5px;
+  background-color: transparent;
+  color: #84868d;
+  font-size: 25px;
+  cursor: pointer;
+
+  // &:hover {
+  //   color: #000;
+  // }
+}
+
+.white:hover {
+  color: #fff;
+}
+
+.black:hover {
+  color: #000;
+}

@@ -4,7 +4,7 @@
   <div class="mc-comment-wrap">
     <loading v-if="showLoading"></loading>
     <h1 class="mc-title">사용자 평</h1>
-    <ul class="mc-users-comment" v-if="currentComment.length > 0">
+    <ul class="mc-users-comment" v-if="currentComment">
       <li
         class="mc-users-comment-list"
         v-for="(item, idx) in currentComment"
@@ -23,7 +23,7 @@
             icon="x"
             class="mc-delete-icon"
             @click="(showConfirmModal = true), (selectedComment = item)"
-            v-if="loginState && currentUser.uid === item.user.uid"
+            v-if="currentUser && currentUser.uid === item.user.uid"
           />
         </div>
         <p class="mc-users-comment-list-comment">
@@ -34,7 +34,7 @@
 
     <span v-else class="mc-comment-empty">등록된 사용자 평이 없습니다. </span>
 
-    <div class="mc-comment" v-if="loginState">
+    <div class="mc-comment" v-if="currentUser">
       <h3 class="mc-comment-title">평가하기</h3>
       <div class="mc-comment-star">
         <star-rating
@@ -50,9 +50,17 @@
         wrap="hard"
       />
     </div>
-    <div class="mc-comment-button" v-if="loginState">
-      <button class="mc-button cancel" @click="commentCancel">취소</button>
-      <button class="mc-button submit" @click="commentSubmit">남기기</button>
+    <div class="mc-comment-button" v-if="currentUser">
+      <default-button
+        :propsName="'취소'"
+        :propsColor="'white'"
+        @clickButton="commentCancel"
+      ></default-button>
+      <default-button
+        :propsName="'남기기'"
+        :propsColor="'white'"
+        @clickButton="commentSubmit"
+      ></default-button>
     </div>
 
     <transition name="modal-fade">
@@ -67,6 +75,7 @@
 </template>
 
 <script>
+import defaultButton from "@/components/common/defaultbutton.vue";
 import StarRating from "./common/starRating.vue";
 import confirmModal from "./common/confirmModal.vue";
 
@@ -78,7 +87,6 @@ export default {
   data() {
     return {
       ratingValue: 0,
-      // inputName: "",
       selectedComment: null,
       showConfirmModal: false,
       inputContent: "",
@@ -89,15 +97,14 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: "auth/getUser",
-      currentComment: "auth/getComments",
-      loginState: "auth/getLoginState",
+      currentComment: "getComments",
     }),
   },
 
   methods: {
     ...mapActions({
-      addComment: "auth/addComment",
-      removeCommentAction: "auth/removeComment",
+      addComment: "addComment",
+      removeCommentAction: "removeComment",
     }),
     getRatingValue(value) {
       this.ratingValue = value;
@@ -141,6 +148,7 @@ export default {
     StarRating,
     confirmModal,
     Loading,
+    defaultButton,
   },
 };
 </script>

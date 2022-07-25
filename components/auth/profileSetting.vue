@@ -2,7 +2,7 @@
   <div class="ps-wrap">
     <div class="ps-modal">
       <div class="ps-profileImg-wrap">
-        <img src="imageSrc" alt="" class="ps-profileImg" @click="clickImg" />
+        <img :src="imageSrc" alt="" class="ps-profileImg" @click="clickImg" />
         <input
           ref="fileRef"
           type="file"
@@ -11,11 +11,30 @@
           @change="fileChange"
         />
       </div>
+      <input type="text" class="ps-id-input" :value="userInfo.id" readonly />
+
+      <input type="text" class="ps-nick-input" v-model="nick" />
+
+      <div class="ps-button-wrap">
+        <default-button
+          :propsName="'취소'"
+          :propsColor="'black'"
+          @clickButton="$emit('close')"
+        ></default-button>
+        <default-button
+          :propsName="'수정'"
+          :propsColor="'black'"
+          @clickButton="modify"
+          :style="!changed && 'pointer-events: none'"
+        ></default-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import defaultButton from "@/components/common/defaultButton.vue";
+
 export default {
   methods: {
     fileChange(e) {
@@ -31,30 +50,58 @@ export default {
         };
       });
     },
+
+    modify() {
+      console.log("dd");
+    },
+    clickImg() {
+      this.$refs.fileRef.click();
+    },
   },
 
   created() {
     this.userInfo = this.$store.getters["auth/getUser"];
     this.imageSrc = this.userInfo.profile_img;
+    this.nick = this.userInfo.nick;
   },
 
   data() {
     return {
       userInfo: null,
-      filepath: null,
       imagefile: null,
       imageSrc: null,
+      nick: null,
+      changed: false,
     };
   },
 
-  methods: {
-    clickImg() {
-      this.$refs.fileRef.$el.click();
+  computed: {
+    checkChanged() {
+      if (
+        this.userInfo &&
+        (this.userInfo.profile_img !== this.imageSrc ||
+          this.userInfo.nick !== this.nick)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
+  },
+
+  watch: {
+    checkChanged(val) {
+      this.changed = val;
+    },
+  },
+
+  components: {
+    defaultButton,
   },
 };
 </script>
 
+DefaultButton
 <style scoped lang="scss">
 .ps-wrap {
   position: fixed;
@@ -92,6 +139,39 @@ export default {
     margin: auto;
     cursor: pointer;
     background-color: transparent;
+  }
+
+  .ps-close-icon {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    color: #84868d;
+    font-size: 20px;
+    cursor: pointer;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  .ps-id-input,
+  .ps-nick-input {
+    width: 200px;
+    padding: 5px;
+    font-size: 18px;
+    margin: 3px;
+    border-radius: 10px;
+    outline: none;
+  }
+
+  .ps-id-input {
+    background-color: #ccc;
+  }
+
+  .ps-button-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

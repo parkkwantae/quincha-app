@@ -21,16 +21,16 @@
         v-model="login_pw"
       />
       <div class="lm-button-wrap">
-        <button class="lm-button login-button" @click="login" type="submit">
-          로그인
-        </button>
-        <button
-          class="lm-button join-button"
-          type="button"
-          @click="currentPage = 'join'"
-        >
-          회원가입
-        </button>
+        <default-button
+          @clickButton="login"
+          :propsName="'로그인'"
+          :propsColor="'black'"
+        ></default-button>
+        <default-button
+          @clickButton="currentPage = 'join'"
+          :propsName="'회원가입'"
+          :propsColor="'black'"
+        ></default-button>
       </div>
       <font-awesome-icon
         icon="x"
@@ -65,12 +65,16 @@
         v-model="join_re_pw"
       />
       <div class="lm-button-wrap">
-        <button class="lm-button cancel-button" @click="goLoginPage">
-          취소
-        </button>
-        <button class="lm-button join-submit-button" @click="join">
-          가입하기
-        </button>
+        <default-button
+          @clickButton="goLoginPage"
+          :propsName="'취소'"
+          :propsColor="'black'"
+        ></default-button>
+        <default-button
+          @clickButton="join"
+          :propsName="'가입하기'"
+          :propsColor="'black'"
+        ></default-button>
       </div>
       <font-awesome-icon
         icon="x"
@@ -83,6 +87,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import defaultButton from "@/components/common/defaultButton.vue";
 
 export default {
   data() {
@@ -98,6 +103,8 @@ export default {
       join_re_pw: "",
     };
   },
+
+  components: { defaultButton },
 
   methods: {
     ...mapActions({ setUser: "auth/setUser" }),
@@ -135,7 +142,7 @@ export default {
             });
             alert("가입 완료");
 
-            this.$emit("close");
+            this.currentPage = "login";
           })
           .catch((e) => {
             alert(e.code), console.error(e);
@@ -143,17 +150,12 @@ export default {
       }
     },
 
-    login() {
-      this.$auth()
-        .signInWithEmailAndPassword(this.login_id, this.login_pw)
-        .then(async (user) => {
-          await this.setUser(user.user.uid);
-          this.$emit("close");
-        })
-        .catch((e) => {
-          alert(e.code);
-          console.error(e);
-        });
+    async login() {
+      await this.$store.dispatch("auth/login", {
+        id: this.login_id,
+        pw: this.login_pw,
+      });
+      this.$emit("close");
     },
   },
 };

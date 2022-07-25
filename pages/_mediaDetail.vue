@@ -25,7 +25,7 @@ export default {
       type: query.type,
     });
 
-    await store.dispatch("auth/getComment", params.mediaDetail);
+    await store.dispatch("getComment", params.mediaDetail);
     const info = store.getters.selectedMediaInfo;
     let data = null;
 

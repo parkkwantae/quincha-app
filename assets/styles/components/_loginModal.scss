@@ -64,19 +64,4 @@
 .lm-button-wrap {
   align-self: flex-end;
   padding: 10px;
-
-  .lm-button {
-    border: none;
-    outline: none;
-    padding: 5px;
-    background-color: transparent;
-    color: #84868d;
-    font-size: 25px;
-    // font-family: Nanum-Pen-Regular;
-    cursor: pointer;
-
-    &:hover {
-      color: #000;
-    }
-  }
 }

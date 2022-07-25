@@ -1,10 +1,6 @@
-// import { firestore } from "@/plugins/firebase";
-
 export const state = () => {
   return {
-    loginState: false,
     currentUser: null, // 현재 로그인 유저 정보
-    currentMediaComment: [], // 현재 선택된 작품 평 리스트
   };
 };
 
@@ -12,29 +8,16 @@ export const getters = {
   getUser(state) {
     return state.currentUser;
   },
-
-  getComments(state) {
-    return state.currentMediaComment;
-  },
-
-  getLoginState(state) {
-    return state.loginState;
-  },
 };
 
 export const mutations = {
   setUser(state, payload) {
-    state.loginState = true;
     state.currentUser = payload;
   },
 
   logout(state) {
-    state.currentUser = "";
-    state.loginState = false;
-  },
-
-  setComment(state, payload) {
-    state.currentMediaComment = payload;
+    state.currentUser = null;
+    window.sessionStorage.removeItem("idToken");
   },
 };
 
@@ -48,83 +31,24 @@ export const actions = {
       .catch((e) => console.error(e));
   },
 
+  async login({ dispatch }, payload) {
+    await this.$auth()
+      .signInWithEmailAndPassword(payload.id, payload.pw)
+      .then(async (user) => {
+        await dispatch("setUser", user.user.uid);
+        this.$auth()
+          .currentUser.getIdToken(true)
+          .then((idToken) => {
+            window.sessionStorage.setItem("idToken", JSON.stringify(idToken));
+          });
+      })
+      .catch((e) => {
+        alert(e.code);
+        console.error(e);
+      });
+  },
+
   logout({ commit }) {
     commit("logout");
-  },
-
-  async addComment({ commit, state }, payload) {
-    const q = this.$firestore().collection("comments").doc(payload.id);
-    const randomId = Math.random().toString(36).substring(2, 12);
-
-    q.get()
-      .then((doc) => {
-        if (doc.exists) {
-          const comments = doc.data().comments;
-
-          comments.unshift({
-            user: state.currentUser,
-            rating: payload.ratingValue,
-            comment: payload.comment,
-            id: randomId,
-          });
-
-          q.update({ comments });
-
-          commit("setComment", comments);
-        } else {
-          const comments = [
-            {
-              user: state.currentUser,
-              rating: payload.ratingValue,
-              comment: payload.comment,
-              id: randomId,
-            },
-          ];
-          q.set({
-            comments,
-          });
-          commit("setComment", comments);
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        alert(e.code);
-      });
-  },
-
-  async getComment({ commit }, payload) {
-    const q = this.$firestore().collection("comments").doc(payload);
-
-    q.get()
-      .then((doc) => {
-        if (doc.exists) {
-          commit("setComment", doc.data().comments);
-        } else {
-          commit("setComment", []);
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  },
-
-  async removeComment({ commit }, payload) {
-    const q = this.$firestore().collection("comments").doc(payload.id);
-    let comments;
-    await q
-      .get()
-      .then(async (doc) => {
-        comments = doc.data().comments;
-        const idx = comments.findIndex((obj) => obj.id === payload.data.id);
-        comments.splice(idx, 1);
-      })
-      .catch((e) => console.error(e.code));
-
-    await q
-      .update({
-        comments,
-      })
-      .then(() => commit("setComment", comments))
-      .catch((e) => console.error(e.code));
   },
 };
