@@ -4,16 +4,13 @@ export const state = () => {
     listData: null, // 카테고리에 따른 데이터 리스트
     selectedMediaInfo: null, // 현재 선택된 작품정보
     currentMediaComment: null, // 현재 선택된 작품 평 리스트
+    searchText: null, // 검색 텍스트
   };
 };
 
 export const getters = {
   selectedMediaInfo(state) {
     return state.selectedMediaInfo;
-  },
-
-  getLoading(state) {
-    return state.loading;
   },
 
   getListData(state) {
@@ -32,6 +29,8 @@ export const mutations = {
       payload.data.forEach((item) => state.listData.push(item));
     }
     state.selectedCategory = payload.category;
+    if (payload.searchText) state.searchText = payload.searchText;
+    else state.searchText = null;
   },
 
   getMediaDetailInfo(state, payload) {
@@ -44,17 +43,26 @@ export const mutations = {
 };
 
 export const actions = {
-  async getMediaList({ commit }, payload) {
+  async getMediaList({ commit, state }, payload) {
     try {
-      const response = await this.$base_api.get(
-        `/trending/${payload.category.type}/day`,
-        {
+      let response;
+      if (payload.category.type !== "search") {
+        response = await this.$base_api.get(
+          `/trending/${payload.category.type}/day`,
+          {
+            params: {
+              page: payload.page,
+            },
+          }
+        );
+      } else {
+        response = await this.$base_api.get("/search/multi", {
           params: {
+            query: state.searchText,
             page: payload.page,
           },
-        }
-      );
-
+        });
+      }
       const data = response.data.results;
 
       commit("listSetting", {
@@ -64,6 +72,7 @@ export const actions = {
       });
     } catch (error) {
       console.log(error.message);
+      throw error;
     }
   },
 
@@ -101,7 +110,7 @@ export const actions = {
 
     q.get()
       .then((doc) => {
-        if (doc.exists) {
+        if (doc.exists && doc.data().comments) {
           const comments = doc.data().comments;
 
           comments.unshift({
@@ -170,5 +179,25 @@ export const actions = {
       })
       .then(() => commit("setComment", comments))
       .catch((e) => console.error(e.code));
+  },
+
+  async mediaSearch({ commit }, payload) {
+    try {
+      const response = await this.$base_api.get("/search/multi", {
+        params: {
+          query: payload,
+          page: 1,
+        },
+      });
+
+      commit("listSetting", {
+        data: response.data.results,
+        page: 1,
+        category: { name: "전체", type: "search" },
+        searchText: payload,
+      });
+    } catch (e) {
+      console.error(e.code);
+    }
   },
 };

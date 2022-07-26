@@ -51,4 +51,24 @@ export const actions = {
   logout({ commit }) {
     commit("logout");
   },
+
+  async profileModify({ dispatch }, payload) {
+    const q = this.$firestore().collection("users").doc(payload.uid);
+
+    if (!payload.imageFile) {
+      q.update({ nick: payload.nick });
+    } else {
+      const storageRef = this.$storage()
+        .ref()
+        .child(`profile/${payload.uid}/profile_img.png`);
+      await storageRef.put(payload.imageFile);
+      const storageUrl = await storageRef.getDownloadURL();
+      await q.update({
+        nick: payload.nick,
+        profile_img: storageUrl,
+      });
+    }
+
+    await dispatch("setUser", payload.uid);
+  },
 };

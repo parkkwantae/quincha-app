@@ -1,6 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 const config = {
   apiKey: process.env.FB_API_KEY,
@@ -19,4 +20,5 @@ export default function ({ store }, inject) {
 
   inject("auth", firebase.auth);
   inject("firestore", firebase.firestore);
+  inject("storage", firebase.storage);
 }

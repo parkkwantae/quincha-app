@@ -26,9 +26,13 @@
             v-if="currentUser && currentUser.uid === item.user.uid"
           />
         </div>
-        <p class="mc-users-comment-list-comment">
-          {{ item.comment }}
-        </p>
+
+        <textarea
+          class="mc-users-comment-list-comment"
+          :title="`${item.comment}`"
+          :value="item.comment"
+          readonly
+        />
       </li>
     </ul>
 

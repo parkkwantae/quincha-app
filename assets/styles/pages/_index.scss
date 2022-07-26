@@ -3,8 +3,13 @@
   height: 100vh;
 }
 
-.id-categoryWrap {
+.id-category-wrap {
   width: 100%;
+  display: flex;
+}
+
+.id-search-wrap {
+  margin-left: 30px;
   display: flex;
 }
 
@@ -19,6 +24,6 @@
   border: 1px solid #fff;
   color: white;
   text-align: center;
-  z-index: 999;
+  z-index: 99;
   cursor: pointer;
 }

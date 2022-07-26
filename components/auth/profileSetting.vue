@@ -1,5 +1,6 @@
 <template>
   <div class="ps-wrap">
+    <loading v-if="showLoading"></loading>
     <div class="ps-modal">
       <div class="ps-profileImg-wrap">
         <img :src="imageSrc" alt="" class="ps-profileImg" @click="clickImg" />
@@ -34,6 +35,7 @@
 
 <script>
 import defaultButton from "@/components/common/defaultButton.vue";
+import loading from "@/components/common/loading.vue";
 
 export default {
   methods: {
@@ -51,8 +53,20 @@ export default {
       });
     },
 
-    modify() {
-      console.log("dd");
+    async modify() {
+      if (this.nick.length < 3) {
+        alert("닉네임은 3자 이상으로 해주세요");
+      } else {
+        this.showLoading = true;
+        await this.$store.dispatch("auth/profileModify", {
+          uid: this.userInfo.uid,
+          id: this.userInfo.id,
+          nick: this.nick,
+          imageFile: this.imagefile,
+        });
+        this.$emit("close");
+        this.showLoading = false;
+      }
     },
     clickImg() {
       this.$refs.fileRef.click();
@@ -72,6 +86,7 @@ export default {
       imageSrc: null,
       nick: null,
       changed: false,
+      showLoading: false,
     };
   },
 
@@ -97,81 +112,7 @@ export default {
 
   components: {
     defaultButton,
+    loading,
   },
 };
 </script>
-
-DefaultButton
-<style scoped lang="scss">
-.ps-wrap {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-
-  .ps-modal {
-    width: 400px;
-    height: 200px;
-    border-radius: 20px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-
-  .ps-inputfile {
-    display: none;
-  }
-
-  .ps-profileImg {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin: auto;
-    cursor: pointer;
-    background-color: transparent;
-  }
-
-  .ps-close-icon {
-    position: absolute;
-    top: 12px;
-    right: 18px;
-    color: #84868d;
-    font-size: 20px;
-    cursor: pointer;
-
-    &:hover {
-      color: #000;
-    }
-  }
-
-  .ps-id-input,
-  .ps-nick-input {
-    width: 200px;
-    padding: 5px;
-    font-size: 18px;
-    margin: 3px;
-    border-radius: 10px;
-    outline: none;
-  }
-
-  .ps-id-input {
-    background-color: #ccc;
-  }
-
-  .ps-button-wrap {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-</style>

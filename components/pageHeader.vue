@@ -10,7 +10,7 @@
       >
         퀸챠
       </nuxt-link>
-      <div class="ph-auth-wrap">
+      <div class="ph-auth-wrap" ref="setting">
         <img
           :src="currentUser.profile_img"
           alt="default_profile"
@@ -77,10 +77,26 @@ export default {
       this.profileSettingOpen = true;
       this.settingOpen = false;
     },
+
+    onClick(e) {
+      if (e.target.parentNode !== this.$refs.setting) {
+        this.settingOpen = false;
+      }
+    },
   },
 
   computed: {
     ...mapGetters({ currentUser: "auth/getUser" }),
+  },
+
+  watch: {
+    settingOpen() {
+      if (this.settingOpen) {
+        window.addEventListener("click", this.onClick);
+      } else {
+        window.removeEventListener("click", this.onClick);
+      }
+    },
   },
 };
 </script>
