@@ -36,11 +36,16 @@ export const actions = {
       .signInWithEmailAndPassword(payload.id, payload.pw)
       .then(async (user) => {
         await dispatch("setUser", user.user.uid);
+
         this.$auth()
           .currentUser.getIdToken(true)
           .then((idToken) => {
             window.sessionStorage.setItem("idToken", JSON.stringify(idToken));
           });
+        // window.sessionStorage.setItem(
+        //   "idToken",
+        //   JSON.stringify(user.user.refreshToken)
+        // );
       })
       .catch((e) => {
         alert(e.code);

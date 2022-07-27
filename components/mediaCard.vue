@@ -7,7 +7,14 @@
         query: { type: mediadata.media_type },
       }"
     >
-      <img :src="imgUrl" alt="poster" class="mcd-poster" />
+      <img
+        :src="imgUrl"
+        alt="poster"
+        class="mcd-poster"
+        :onerror="
+          (src = 'https://via.placeholder.com/200x300/000000?text=no+poster')
+        "
+      />
     </nuxt-link>
   </div>
 </template>

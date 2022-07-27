@@ -1,0 +1,81 @@
+.pdi-info {
+  display: flex;
+  gap: 50px;
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
+
+  .pdi-poster-wrap {
+    flex-basis: 50%;
+  }
+
+  .pdi-poster {
+    display: block;
+    width: 80%;
+    height: 300px;
+    margin: auto;
+  }
+
+  .pdi-person-info {
+    flex-basis: 50%;
+    line-height: 1.5;
+
+    @media (max-width: 650px) {
+      margin-left: 20px;
+    }
+
+    .pdi-name {
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    span {
+      font-weight: 300;
+      margin-right: 10px;
+    }
+  }
+}
+.pdi-credits {
+  margin-top: 20px;
+
+  .pdi-credits-list-wrap {
+    margin-top: 10px;
+    list-style: none;
+    display: flex;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 14px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b0b0b0;
+      border-radius: 10px;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 3px white;
+    }
+
+    .pdi-credits-list {
+      margin: 0 10px;
+      padding: 0;
+    }
+
+    .pdi-cast-name {
+      font-size: 18px;
+      display: block;
+      text-align: center;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+  }
+}

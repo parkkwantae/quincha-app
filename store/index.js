@@ -5,6 +5,8 @@ export const state = () => {
     selectedMediaInfo: null, // 현재 선택된 작품정보
     currentMediaComment: null, // 현재 선택된 작품 평 리스트
     searchText: null, // 검색 텍스트
+    currentPersonData: null, // 인물 정보
+    // loadingState: false,
   };
 };
 
@@ -19,6 +21,14 @@ export const getters = {
   getComments(state) {
     return state.currentMediaComment;
   },
+
+  getPerson(state) {
+    return state.currentPersonData;
+  },
+
+  // getLoading(state) {
+  //   return state.loadingState;
+  // },
 };
 
 export const mutations = {
@@ -40,6 +50,14 @@ export const mutations = {
   setComment(state, payload) {
     state.currentMediaComment = payload;
   },
+
+  getPerson(state, payload) {
+    state.currentPersonData = payload;
+  },
+
+  // setLoading(state, payload) {
+  //   state.loadingState = payload;
+  // },
 };
 
 export const actions = {
@@ -195,6 +213,22 @@ export const actions = {
         page: 1,
         category: { name: "전체", type: "search" },
         searchText: payload,
+      });
+    } catch (e) {
+      console.error(e.code);
+    }
+  },
+
+  async getPerson({ commit }, payload) {
+    try {
+      const response = await this.$base_api.get(`/person/${payload}`);
+      const response_credits = await this.$base_api.get(
+        `/person/${payload}/combined_credits`
+      );
+
+      commit("getPerson", {
+        info: response.data,
+        credits: response_credits.data,
       });
     } catch (e) {
       console.error(e.code);

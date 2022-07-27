@@ -101,14 +101,14 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: "auth/getUser",
-      currentComment: "getComments",
+      currentComment: "comment/getComments",
     }),
   },
 
   methods: {
     ...mapActions({
-      addComment: "addComment",
-      removeCommentAction: "removeComment",
+      addComment: "comment/addComment",
+      removeCommentAction: "comment/removeComment",
     }),
     getRatingValue(value) {
       this.ratingValue = value;

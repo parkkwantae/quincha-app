@@ -57,6 +57,8 @@ export default {
     },
   },
 
+  loading: "@/components/common/loading",
+
   // styleResources: {
   //   scss: ["@/assets/styles/index.scss"],
   // },

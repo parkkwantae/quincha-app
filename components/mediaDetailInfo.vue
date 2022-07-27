@@ -23,15 +23,21 @@
       <h1 class="mdi-cast-title">주요 출연진</h1>
       <ul class="mdi-cast-list-wrap">
         <li class="mdi-cast-list" v-for="item in cast" :key="item.id">
-          <img
-            :src="
-              item.profile_path === null
-                ? `https://via.placeholder.com/100/4A4F5A/000000?text=no+poster`
-                : `${imgSrc}${item.profile_path}`
-            "
-            alt="cast-poster"
-            class="mdi-cast-poster"
-          />
+          <nuxt-link
+            :to="{
+              path: `/personDetail/${item.id}`,
+            }"
+          >
+            <img
+              :src="
+                item.profile_path === null
+                  ? `https://via.placeholder.com/100/4A4F5A/000000?text=no+poster`
+                  : `${imgSrc}${item.profile_path}`
+              "
+              alt="cast-poster"
+              class="mdi-cast-poster"
+            />
+          </nuxt-link>
           <span class="mdi-cast-name">{{ item.name }}</span>
         </li>
       </ul>
